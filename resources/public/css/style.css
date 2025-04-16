@@ -1,9 +1,70 @@
 body {
-    font-family: 'Iosevka Nerd Font';
+    font-family: 'Iosevka Web';
     font-weight: 370;
     font-size: 35px;
     background-color: #fbf1c7;
     max-width: 800px;
     margin: auto;
     padding: 60px 30px 60px 30px;
+}
+
+.tofill p {
+    text-align: center;
+}
+
+.unfill {
+    border-left: 2px solid #000;
+    color: gray;
+}
+
+.info {
+    font-weight: 370;
+    font-size: 20px;
+}
+
+.hide {
+    height: 0px;
+    width: 0px;
+    resize: none;
+    position: fixed;
+    bottom:-10;
+    right:-10;
+}
+
+.settings {
+    border-radius: 3px;
+    background-color: #fbd6c6;
+}
+
+.settings button {
+    font-family: 'Iosevka Web';
+    font-weight: 250;
+    background-color: inherit;
+    font-size: 15px;
+    border: none;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.active {
+    color: #94bba0;
+}
+
+.warn {
+    font-weight: 370;
+    font-size: 20px;
+}
+
+.restart-btn {
+    float: right;
+    background-color: inherit;
+    font-size: 15px;
+    border: none;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.restart-btn img {
+    width: 15px;
+    height: 15px;
 }
