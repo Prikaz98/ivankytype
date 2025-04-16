@@ -1,5 +1,5 @@
 (ns ivankytype-ui.core
-  (:require [clojure.string :refer [blank?]]))
+  (:require [clojure.string :refer [blank? split]]))
 
 ;;TODO: Store metrics of all clicks and draw graph
 ;;TODO: Add animation when restart
@@ -11,6 +11,10 @@
 (def sizes (.getElementById js/document "sizes"))
 (def warn (.getElementById js/document "warn"))
 (def restart (.getElementById js/document "restart"))
+(def hard (.getElementById js/document "hard-mode"))
+(def easy (.getElementById js/document "easy-mode"))
+
+(def is-easy (= "active" (.-className easy)))
 
 (def start-time (atom nil))
 (def finished-time (atom nil))
@@ -26,6 +30,15 @@
      (.-innerText stat)
      (str seconds " seconds" " / " @attempts " attempts"))))
 
+(defn hard-mistake-behavior []
+  (swap! attempts #(+ 1 %))
+  (set! (.-innerText txt) (str (.-innerText done) (.-innerText txt)))
+  (set! (.-innerText done) ""))
+
+(defn easy-mistake-behavior []
+  ;; TODO: put current char in style error
+  )
+
 (defn input-listener-keydown [event]
   (when (nil? @start-time)
     (reset! start-time (js/Date.now)))
@@ -39,15 +52,12 @@
             (set! (.-innerText done) (str (.-innerText done) head))
             (when (blank? (set! (.-innerText txt) (.substring content 1)))
               (reset! finished-time (js/Date.now))))
-            (do
-              (swap! attempts #(+ 1 %))
-              (set! (.-innerText txt) (str (.-innerText done) (.-innerText txt)))
-              (set! (.-innerText done) "")))))))
+            (if is-easy (easy-mistake-behavior) (hard-mistake-behavior)))))))
 
-(defn input-listener-focusout [event]
+(defn input-listener-focusout [_]
   (set! (.-innerText warn) "Click on text to continue"))
 
-(defn txt-listener-click [event]
+(defn txt-listener-click [_]
   (set! (.-innerText warn) "")
   (.focus input))
 
@@ -62,10 +72,27 @@
 (fill-stat)
 (js/setInterval fill-stat 100)
 
+(defn change-search-params [map]
+  (let [url (.-URL js/document)
+        splitted-url (split url "?")
+        clean-url (first splitted-url)
+        params (js/URLSearchParams. (or (second splitted-url) ""))]
+    (doseq [key (keys map)]
+      (.set params (name key) (key map)))
+    (str clean-url "?" (.toString params))))
+
 (doseq [button (.-children sizes)]
   (let [value (.-innerText button)]
     (.addEventListener
      button
      "click"
-     (fn [_]
-       (.replace js/location (str (.-url js/document) "?size=" value))))))
+     (fn [_] (.replace js/location (change-search-params {:size value}))))))
+
+(defn modeEventListener [input value]
+  (.addEventListener
+   input
+   "click"
+   (fn [_] (.replace js/location (change-search-params {:mode value})))))
+
+(modeEventListener easy "easy")
+(modeEventListener hard "hard")

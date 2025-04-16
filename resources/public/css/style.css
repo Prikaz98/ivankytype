@@ -32,6 +32,7 @@ body {
 }
 
 .settings {
+    display: flex;
     border-radius: 3px;
     background-color: #fbd6c6;
 }
@@ -46,8 +47,12 @@ body {
     margin-left: 10px;
 }
 
+.settings label {
+    font-size: 15px;
+}
+
 .active {
-    color: #94bba0;
+    color: #7e6b63;
 }
 
 .warn {

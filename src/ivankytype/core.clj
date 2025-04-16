@@ -9,7 +9,7 @@
 (defroutes app-routes
   (wrap-routes
    (routes
-       (GET "/" [size] (main/index (if size (Integer/parseInt size))))
+       (GET "/" [size mode] (main/index (if size (Integer/parseInt size)) mode))
        (route/resources "/"))
    wrap-params))
 
