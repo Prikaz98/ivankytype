@@ -11,4 +11,5 @@ UI will be allowed by [localhost:3000](http://localhost:3000)
 ![ivankytype.png](./demo/ivankytype.png)
 ![ivankytype2.png](./demo/ivankytype2.png)
 
-## Inspired by [monkeytype](https://github.com/monkeytypegame/monkeytype)
+### Inspired by
+[monkeytype](https://github.com/monkeytypegame/monkeytype)
