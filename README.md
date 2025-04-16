@@ -10,6 +10,6 @@ UI will be allowed by [localhost:3000](http://localhost:3000)
 ![ivankytype2.png](./demo/ivankytype2.png)
 
 ## Demo
-![demo](./demo/ivankytype.mp4)
+[demo](./demo/ivankytype.mp4)
 
 ## Inspired by [monkeytype](https://github.com/monkeytypegame/monkeytype)
