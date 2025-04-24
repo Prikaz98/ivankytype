@@ -1,7 +1,6 @@
 (ns ivankytype-ui.core
   (:require [clojure.string :refer [blank? split]]))
 
-
 ;;TODO: Store metrics of all clicks and draw graph
 ;;TODO: Add animation when restart
 
@@ -17,11 +16,11 @@
 (def threshold (- (count (.-innerText txt)) 1))
 
 (def is-easy (= "active" (.-className easy)))
+(def restarted (atom false))
 
 (def start-time (atom nil))
 (def finished-time (atom nil))
 (def attempts (atom 0))
-
 
 (defn floor [num scale]
   (let [multip (js/Math.pow 10 scale)]
@@ -35,10 +34,13 @@
      (str seconds " seconds" " / " @attempts " attempts"))))
 
 
-(defn hard-mistake-behavior []
+(defn hard-mistake-behavior [to]
+  (reset! restarted true)
   (swap! attempts #(+ 1 %))
-  (set! (.-innerText txt) (str (.-innerText done) (.-innerText txt)))
-  (set! (.-innerText done) ""))
+  (doseq [id (reverse (range 0 to))]
+    (let [el (.getElementById js/document id)]
+      (.add (.-classList el) "unfill")
+      (.prepend txt el))))
 
 
 (defn easy-mistake-behavior [el]
@@ -53,7 +55,7 @@
       (.append done el))
     (if is-easy
       (easy-mistake-behavior el)
-      (hard-mistake-behavior))))
+      (hard-mistake-behavior index))))
 
 
 (defn handle-backspace! [index]
@@ -65,6 +67,12 @@
 (defn input-listener-keydown [event]
   (when (nil? @start-time)
     (reset! start-time (js/Date.now)))
+
+  ;;dirty hack
+  (when @restarted
+    (set! (.-value input) "")
+    (reset! restarted false))
+
   (when (nil? @finished-time)
     (let [key (.-key event)
           index (count (.-value input))
@@ -73,7 +81,8 @@
           el (.getElementById js/document index)]
       (cond
         (= (count key) 1) (handle-key-press! head key el index)
-        (= key "Backspace") (handle-backspace! index))
+        (= key "Backspace") (handle-backspace! index)
+        :else (do (js/console.log "Unexpected event") (js/console.log event)))
       (when (<= threshold index)
         (reset! finished-time (js/Date.now))))))
 

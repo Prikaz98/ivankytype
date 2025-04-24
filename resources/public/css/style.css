@@ -76,6 +76,7 @@ body {
 .error {
     text-decoration: underline;
     text-decoration-color: red;
+    color: gray;
 }
 
 #done {
