@@ -38,9 +38,10 @@
   [:div {:class "tofill"}
    [:p
     [:label {:id "done"} ""]
-    [:label {:id "txt"
-             :class "unfill"}
-     (gen/get-text size)]]])
+    [:label {:id "txt"}
+     (map-indexed
+      (fn [i c] [:label {:id i :class "unfill"} c])
+      (vec (gen/get-text size)))]]])
 
 (defn- footer-block []
   [:div
@@ -81,4 +82,5 @@
 (comment
   (index 100)
   (str (index-page))
-  (slurp (io/resource "style.css")))
+  (slurp (io/resource "style.css"))
+  (text-block 10))

@@ -13,7 +13,6 @@ body {
 }
 
 .unfill {
-    border-left: 2px solid #000;
     color: gray;
 }
 
@@ -72,4 +71,13 @@ body {
 .restart-btn img {
     width: 15px;
     height: 15px;
+}
+
+.error {
+    text-decoration: underline;
+    text-decoration-color: red;
+}
+
+#done {
+    border-right: 2px solid #000;
 }
