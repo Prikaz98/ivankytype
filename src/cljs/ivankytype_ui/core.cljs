@@ -13,6 +13,7 @@
 (def restart (.getElementById js/document "restart"))
 (def hard (.getElementById js/document "hard-mode"))
 (def easy (.getElementById js/document "easy-mode"))
+(def words-counter (.getElementById js/document "words-counter"))
 (def threshold (- (count (.-innerText txt)) 1))
 
 (def is-easy (= "active" (.-className easy)))
@@ -21,6 +22,9 @@
 (def start-time (atom nil))
 (def finished-time (atom nil))
 (def attempts (atom 0))
+
+(defn actual-words-count-done []
+  (- (count (split (.-innerText done) #" ")) 1))
 
 (defn floor [num scale]
   (let [multip (js/Math.pow 10 scale)]
@@ -81,12 +85,15 @@
           content (.-innerText txt)
           head (first content)
           el (.getElementById js/document index)]
+
       (cond
         (= (count key) 1) (handle-key-press! head key el index)
         (= key "Backspace") (handle-backspace! index)
         :else (do (js/console.log "Unexpected event") (js/console.log event)))
+      (set! (.-innerText words-counter) (actual-words-count-done))
       (when (<= threshold index)
-        (reset! finished-time (js/Date.now))))))
+        (reset! finished-time (js/Date.now))
+        (set! (.-innerText words-counter) (+ (actual-words-count-done) 1))))))
 
 
 (defn input-listener-focusout [_]

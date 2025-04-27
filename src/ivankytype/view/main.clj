@@ -24,14 +24,17 @@
      "hard"]]])
 
 
-(defn- info-block []
+(defn- info-block [size]
   [:div {:class "info"}
    [:div {:style "float: right;"}
     [:label {:id "stat"}]]
    [:p
     [:a {:href "https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki"}
      "BIP-39"]
-    " Typing trainer"]])
+    " Typing trainer"]
+   [:p
+    [:label (str size "/")]
+    [:label {:id "words-counter"} 0]]])
 
 
 (defn- text-block [size]
@@ -64,7 +67,7 @@
                   :type "text/css"}]]
          [:body
           (settings-block size mode)
-          (info-block)
+          (info-block size)
           (text-block size)
           (footer-block)
 
