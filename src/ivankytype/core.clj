@@ -17,5 +17,5 @@
   (run-jetty #'app-routes {:port 3000}))
 
 (comment
-  (future (def server (-main)))
+  (future (-main))
   )

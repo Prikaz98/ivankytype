@@ -4,7 +4,6 @@
             [clojure.java.io :as io]
             [ivankytype.text-gen :as gen]))
 
-
 (defn- settings-block [size mode]
   [:div {:class "settings"}
    [:div {:id "sizes"}
@@ -23,6 +22,7 @@
               :title "Mistake restarts level"
               :class (if (and mode (= mode "hard")) "active" "none")}
      "hard"]]])
+
 
 (defn- info-block []
   [:div {:class "info"}
@@ -43,6 +43,7 @@
       (fn [i c] [:label {:id i :class "unfill"} c])
       (vec (gen/get-text size)))]]])
 
+
 (defn- footer-block []
   [:div
    [:label {:id "warn"
@@ -50,6 +51,7 @@
    [:button {:id "restart"
              :class "restart-btn"}
     [:img {:src "images/restart.png"}]]])
+
 
 (defn- index-page [size mode]
   (html [:html
@@ -78,6 +80,7 @@
       (str)
       (response)
       (assoc :headers {"Content-Type" "text/html; charset=utf-8"})))
+
 
 (comment
   (index 100)

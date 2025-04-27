@@ -31,7 +31,9 @@
   (let [seconds (if @start-time (floor (/ (- (or @finished-time (js/Date.now)) @start-time) 1000) 2) 0)]
     (set!
      (.-innerText stat)
-     (str seconds " seconds" " / " @attempts " attempts"))))
+     (str
+      seconds " seconds"
+      (if (not is-easy) (str " / " @attempts " attempts") "")))))
 
 
 (defn hard-mistake-behavior [to]
